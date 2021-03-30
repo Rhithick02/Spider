@@ -15,7 +15,7 @@ typedef tree<int,null_type,less<int>,rb_tree_tag,
 tree_order_statistics_node_update> indexed_set;
 
 vector <int> top_sort;
-vector <int> ar[MAX], dp(MAX);
+vector <int> ar[MAX];
 vector <bool> vi(MAX);
 void dfs(int node) {
     vi[node] = true;
@@ -43,13 +43,8 @@ int main(){
         }
     }
     reverse(asc(top_sort));
-    int src, dest;
-    cin >> src >> dest;
-    dp[src] = 1;
     for(auto it: top_sort) {
-        for(auto to: ar[it]) {
-            dp[to] += dp[it];
-        }
+        cout << it << " ";
     }
-    cout << dp[dest] << endl;
+    cout << "\n";
 }
