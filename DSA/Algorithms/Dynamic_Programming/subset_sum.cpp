@@ -24,15 +24,13 @@ void subsets(vector <int> &ar, int sum, int n, vector <vector <bool>> &dp, vecto
         return;
     }
     if(dp[sum][n-1]) {
-        vector <int> b = ans;
         subsets(ar, sum, n-1, dp, ans);
     }
     if(sum >= ar[n-1] && dp[sum-ar[n-1]][n-1]) {
         ans.push_back(n-1);
         subsets(ar, sum - ar[n-1], n-1, dp, ans);
-    }
-    if(!(dp[sum][n-1]))
         ans.pop_back();
+    }
 }
 int main() {
     int n, sum;
