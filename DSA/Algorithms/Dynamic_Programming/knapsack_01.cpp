@@ -27,8 +27,8 @@ int main() {
         cin >> values[i];
     }
     vector <vector <int>> dp(n+1, vector <int>(w+1, 0));
-    for(int j = 1; j <= w; j++) {
-        for(int i = 1; i <= n; i++) {
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= w; j++) {
             dp[i][j] = max(dp[i-1][j], (j-weights[i-1] >= 0 ? dp[i-1][j-weights[i-1]] + values[i-1] : 0));
         }
     }
