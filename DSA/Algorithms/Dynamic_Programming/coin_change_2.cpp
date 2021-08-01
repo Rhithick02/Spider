@@ -26,11 +26,11 @@ int main() {
         cin >> ar[i];
     }
     dp[0] = 0;
-    for(int i = 1; i <= sum; i++) {
-        for(int j = 0; j < n; j++) {
-            if(i < ar[j]) continue;
-            dp[i] = min(dp[i], 1 + dp[i - ar[j]]);
+    for(int i = 0; i < n; i++) {
+        for(int j = ar[i]; j <= sum; j++) {
+            dp[j] = min(dp[j], 1 + dp[j-ar[i]]);
         }
     }
+    // for(int i = 1; i <= sum; i++) cout << dp[i] << " ";
     cout << (dp[sum] != mod ? dp[sum] : -1) << endl;
 }

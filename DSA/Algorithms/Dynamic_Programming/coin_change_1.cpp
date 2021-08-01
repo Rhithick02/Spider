@@ -21,16 +21,15 @@ tree_order_statistics_node_update> indexed_set;
 int main() {
     int n, sum;
     cin >> n >> sum;
-    vector <int> ar(n);
-    vector <vector <int>> dp(sum + 1, vector <int> (n+1, 0));
+    vector <int> ar(n), dp(sum+1);
     for(int i = 0; i < n; i++) {
         cin >> ar[i];
-        dp[0][i] = 1;
     }
-    for(int i = 1; i <= sum; i++) {
-        for(int j = 1; j <= n; j++) {
-            dp[i][j] = dp[i][j-1] + (i-ar[j-1] >= 0 ? dp[i-ar[j-1]][j] : 0);
+    dp[0] = 1;
+    for(int i = 0; i < n; i++) {
+        for(int j = ar[i]; j <= sum; j++) {
+            dp[j] += dp[j - ar[i]];
         }
     }
-    cout << dp[sum][n] << endl;
+    cout << dp[sum] << endl;
 }
