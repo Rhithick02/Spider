@@ -24,5 +24,5 @@ int main() {
         if(!i) continue;
         dp[i] = max(dp[i-1] + dp[i], dp[i]);
     }
-    cout << dp[n-1] << endl;
+    cout << *max_element(asc(dp)) << endl;
 }
