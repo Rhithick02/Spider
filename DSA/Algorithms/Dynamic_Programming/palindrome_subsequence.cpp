@@ -27,7 +27,7 @@ int main() {
         for(int i = 0; i < n - len + 1; i++) {
             int j = i + len - 1;
             if(s[i] == s[j]) {
-                if(len == 1) dp[i][j] = 2;
+                if(len == 2) dp[i][j] = 2;
                 else {
                     dp[i][j] = 2 + dp[i+1][j-1];
                 }
