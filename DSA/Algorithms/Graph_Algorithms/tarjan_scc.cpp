@@ -39,7 +39,7 @@ void dfs(vector <int> ar[], int s, vector <int>& stack, vector <int>& disc, vect
         stack.pop_back();
     }
 }
-void tarjan_scc(vector <int> ar[], int n, int m) {
+void tarjan_scc(vector <int> ar[], int n) {
     vector <int> stack, disc(n+1, -1), low(n+1, -1);
     vector <bool> instack(n+1, false);
     for(int i = 1; i <= n; i++) {
@@ -56,5 +56,5 @@ int main() {
         cin >> u >> v;
         ar[u].pb(v);
     }
-    tarjan_scc(ar);
+    tarjan_scc(ar, n);
 }
