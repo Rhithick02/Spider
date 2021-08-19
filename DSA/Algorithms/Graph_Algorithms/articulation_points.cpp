@@ -14,32 +14,39 @@ using namespace std;
 typedef tree<int,null_type,less<int>,rb_tree_tag,
 tree_order_statistics_node_update> indexed_set;
 
-void dfs(vector <int> ar[], int s, vector <int>& disc, vector <int>& low, vector <int>& parent, vector <bool>& ap) {
+void dfs(vector <int> ar[], int s, vector <int>& disc, vector <int>& low, vector 
+                                                        <bool>& ap, int p = -1) {
     static int time = 0;
-    disc[s] = disc[low] = time++;
+    disc[s] = low[s] = time++;
     int children = 0;
     for(auto it: ar[s]) {
-        if(disc[it] == -1) {
-            parent[it] = s;
-            children++;
-            dfs(ar, it, disc, low, parent, ap);
-            low[s] = min(low[s], low[it]);
-            if(parent[s] == -1 && children > 1) {
-                ap[s] = true;
-            } else if(parent[s] != -1 && low[it] >= disc[s]) {
-                
-            }
-        } else if(parent[s] != it) { // Back edge and ignoring child - parent back edge
+        if(it == p) continue;
+        if(disc[it] != -1) {
             low[s] = min(low[s], disc[it]);
+        } else {
+            dfs(ar, it, disc, low, ap, s);
+            children++;
+            low[s] = min(low[s], low[it]);
+            if(low[it] >= disc[s] && p != -1) {  // Case 2 if AP is not a root and ignoring back edges
+                ap[s] = true;
+            }
+        }
+        if(p == -1 && children > 1) {   // Case - 1 if AP is a root
+            ap[s] = true;
         }
     }
 }
 void find_ap(vector <int> ar[], int n) {
     vector <bool> ap(n+1, false);
-    vector <int> disc(n+1, -1), low(n+1, -1), parent(n+1, -1);
+    vector <int> disc(n+1, -1), low(n+1, -1);
     for(int i = 1; i <= n; i++) {
         if(disc[i] == -1) {
-            dfs(ar, i, disc, low, parent, ap);
+            dfs(ar, i, disc, low, ap);
+        }
+    }
+    for(int i = 1; i <= n; i++) {
+        if(ap[i] == true) {
+            cout << i << " ";
         }
     }
 }
