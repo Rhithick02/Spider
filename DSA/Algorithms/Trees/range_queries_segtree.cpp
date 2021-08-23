@@ -20,8 +20,7 @@ void dfs(vector <int> ar[], int s, vector <int>& tin, vector <int>& tout) {
         if(tin[to] != -1) continue;
         dfs(ar, to, tin, tout);
     }
-    flat_tree.pb(s);
-    tout[s] = timer++;
+    tout[s] = timer;
 }
 int build_tree(vector <int>& seg_tree, vector <int>& val, int idx, int l, int r) {
     if(l == r) {
@@ -69,17 +68,16 @@ int main() {
     dfs(ar, 1, tin, tout);
 
     // Build segment tree on flat_tree
-    vector <int> seg_tree(4 * flat_tree.size());
-    build_tree(seg_tree, val, 0, 0, flat_tree.size()-1);
+    vector <int> seg_tree(4 * n);
+    build_tree(seg_tree, val, 0, 0, n-1);
 
     // Updating an element
     int node = 3;
     val[node] += 5;
-    int l = tin[node], r = tout[node];
-    update(seg_tree, 0, 0, flat_tree.size()-1, l, 5);
-    update(seg_tree, 0, 0, flat_tree.size()-1, r, 5);
+    int l = tin[node], r = tout[node]-1;
+    update(seg_tree, 0, 0, n-1, l, 5);
     
-    // Finding the sum of sub tree rooted at node 1
-    int ans = find_sum(seg_tree, 0, 0, flat_tree.size()-1, l, r);
-    cout << ans / 2 << endl; // Dividing by 2 as elements are repeated twice in euler tour
+    // Finding the sum of sub tree rooted at node
+    int ans = find_sum(seg_tree, 0, 0, n-1, l, r);
+    cout << ans << endl;
 }
