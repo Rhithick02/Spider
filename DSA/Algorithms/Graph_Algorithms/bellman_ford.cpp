@@ -13,6 +13,7 @@ tree_order_statistics_node_update> indexed_set;
 
 int main() {
     int n, m;
+    bool ok;
     cin >> n >> m;
     vector <pair<pair<int, int>, int>> ar(m);
     vector <int> dist(n+1, mod);
@@ -20,12 +21,18 @@ int main() {
     for(int i = 0; i < m; i++) {
         cin >> ar[i].fi.fi >> ar[i].fi.se >> ar[i].se;
     }
-    for(int i = 0; i < n-1; i++) {
+    for(int i = 0; i < n; i++) {
+        ok = false;
         for(int j = 0; j < m; j++) {
             if(dist[ar[j].fi.fi] < mod) {
                 dist[ar[j].fi.se] = min(dist[ar[j].fi.se], ar[j].se + dist[ar[j].fi.fi]);
+                ok = true;
             }
         }
+    }
+    if(ok) {
+        cout << "Negative cycle detected\n";
+        exit(0);
     }
     for(int i = 1; i <= n; i++) {
         cout << dist[i] << " ";
