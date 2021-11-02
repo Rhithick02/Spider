@@ -66,7 +66,6 @@ int main() {
     }
     // Rooted at 1
     dfs(ar, 1, tin, tout);
-
     // Build segment tree on flat_tree
     vector <int> seg_tree(4 * n);
     build_tree(seg_tree, val, 0, 0, n-1);
