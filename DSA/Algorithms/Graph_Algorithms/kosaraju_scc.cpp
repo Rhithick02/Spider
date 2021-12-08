@@ -1,71 +1,60 @@
-/* Find total no of strongly connected components in a graph */
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
-using namespace __gnu_pbds;
 using namespace std;
+using namespace __gnu_pbds;
 #define lli long long
-#define For(i,a,n) for(int i=(a);i<n;i++)
-#define asc(x) x.begin(),x.end()
-#define des(x) x.rbegin(),x.rend()
-#define pb push_back
 #define fi first
 #define se second
 #define mod 1000000007
 #define MAX 100001
-typedef tree<int,null_type,less<int>,rb_tree_tag,
+#define pb push_back
+typedef tree<int, null_type, less<int>, rb_tree_tag,
 tree_order_statistics_node_update> indexed_set;
 
-void top_sort(vector <int>& ans, vector <int> ar[], vector <bool>& vi, int s) {
+vector<bool> vi;
+vector<int> ord;
+vector<vector<int>> ar, ra, ssc;
+void topsort(int s) {
     vi[s] = true;
-    for(auto it: ar[s]) {
-        if(vi[it]) continue;
-        top_sort(ans, ar, vi, it);
+    for (auto it: ar[s]) {
+        if (vi[it]) continue;
+        topsort(it);
     }
-    ans.push_back(s);
+    ord.pb(s);
 }
-void reverse(vector <int> rev[], vector <int> ar[], int n) {
-    for(int i = 1; i <= n; i++) {
-        for(auto it: ar[i]) {
-            rev[it].push_back(i);
-        }
-    }
-}
-void dfs(vector <int> rev[], vector <bool>& vi, int s) {
+void dfs(int s, vector<int>& temp) {
     vi[s] = true;
-    for(auto it: ar[s]) {
-        if(vi[it]) continue;
-        dfs(rev, vi, it);
+    for (auto it : ra[s]) {
+        if (vi[it]) continue;
+        dfs(it, temp);
     }
+    temp.pb(s);
 }
 int main() {
-    int n, m, cnt = 0;
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n, m;
     cin >> n >> m;
-    vector <int> ar[n+1], rev[n+1], ans;
-    vector <bool> vi(n+1);
-    for(int i = 0, u, v; i < n; i++) {
+    ar.resize(n+1);
+    ra.resize(n+1);
+    vi.resize(n+1);
+    for (int i = 0, u, v; i < m; i++) {
         cin >> u >> v;
-        ar[u].push_back(v);
+        ar[u].pb(v);
+        ra[v].pb(u);
     }
-    // Finding the topological order to get the source node
-    for(int i = 1; i <= n; i++) {
-        if(vi[i]) continue;
-        top_sort(ans, ar, vi, i);
+    for (int i = 1; i <= n; i++) {
+        if (vi[i]) continue;
+        topsort(i);
     }
-
-    // Reversing the graph
-    reverse(rev, ar, n);
-
-    // Reusing the visited array
-    for(int i = 1; i <= n; i++) {
-        vi[i] = false;
+    vi.assign(n+1, false);
+    while (!ord.empty()) {
+        if (!vi[ord.back()]) {
+            vector<int> temp;
+            dfs(ord.back(), temp);
+            ssc.pb(temp);
+        }
+        ord.pop_back();
     }
-
-    while(!ans.empty()) {
-        int cur = ans.back();
-        ans.pop_back();
-        if(vi[cur]) continue;
-        dfs(rev, vi, cur);
-        cnt++;
-    }
-    cout << cnt << endl;
+    cout << scc.size() << endl;
 }
